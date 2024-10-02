@@ -1,0 +1,60 @@
+[project]
+name = "tp-newsletter"
+description = "Open source email newsletter"
+readme = "README.md"
+authors = [
+  {name = "Jason Lee Miller", email = "jason@thoughtparamters.com"}
+]
+license = { file = "LICENSE" }
+dependencies = [
+  "flask",
+  "flask-mail",
+  "python-dotenv"
+]
+requires-python = ">=3.11"
+dynamic = ["version"]
+classifiers = [
+  "Development Status :: 1 - Planning",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Communications :: Email",
+  "Topic :: Internet :: WWW/HTTP",
+]
+
+[project.scripts]
+open-newsletter = "open_newsletter:app"
+
+[build-system]
+requires ["hatching"]
+build-backend = "hatching.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = ["pytest"]
+
+[tool.hatch.metdata]
+allow-direct-references = true
+
+[tool.hatch.version]
+path = "package.json"
+pattern = '"version":\s*"(?P<version>[^"]+)"'
+
+[tool.hatch.build.hooks.custom]
+
+[tool.hatch.build.targets.wheel]  # build a wheel
+packages = ["backend"]
+exclude = [
+  ".dockerignore",
+  ".gitignore",
+  "webui_secret_key",
+  "dev.sh",
+  "requirements.txt",
+  "start.sh",
+  "start_windows.bat",
+  "webui.db",
+]
+force-include = ["CHANGELOG.md"]
+
+
+
