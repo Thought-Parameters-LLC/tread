@@ -9,20 +9,28 @@ install:
 	$(DOCKER_COMPOSE) up -d
 
 remove:
-	@chmod +x confirm_remove.sh
-	@./confirm_remove.sh
+	@$(DOCKER_COMPOSE) down
 
 start:
 	$(DOCKER_COMPOSE) start
+
 startAndBuild: 
 	$(DOCKER_COMPOSE) up -d --build
 
 stop:
 	$(DOCKER_COMPOSE) stop
 
+pyrequire:
+	@pip install -r dev-requirements.txt
+py:
+	@python -m build --no-isolation --outdir dist/
+
+pyclean:
+	rm -rf dist/
+
 update:
 	@git pull
 	$(DOCKER_COMPOSE) down
-	@docker stop tp-newsletter || true
+	@docker stop tread || true
 	$(DOCKER_COMPOSE) up --build -d
 	$(DOCKER_COMPOSE) start

@@ -1,4 +1,4 @@
-# Installation of TPNewsletter
+# Installation of Tread
 
 ## Installing using Kustomize
 
@@ -19,7 +19,7 @@ helm package ./kubernetes/helm/
 For cpu-only pod
 
 ```bash
-helm install tpnewsletter ./tpnewsletter-*.tgz
+helm install tread ./tread-*.tgz
 ```
 
 Check the `kubernetes/helm/values.yaml` file to know which parameters are available for customization.
