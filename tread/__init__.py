@@ -2,7 +2,8 @@ import os
 from pathlib import Path
 from flask import Flask
 from .config import Config
-from .routes.frontend import frontend
+from .jwt import jwt
+from .routes.webui import webui
 from .routes.api import api
 from .bcrypt import bcrypt
 from .database import db
@@ -18,7 +19,6 @@ def create_app(test_config=None):
       # load the test config if passed in
       app.config.from_mapping(test_config)
     
-    print(str(app.config))
     try:  
       Path(app.config['DATA_DIR']).mkdir(parents=True, exist_ok=True)
     except OSError:
@@ -49,16 +49,15 @@ def create_app(test_config=None):
     except OSError:
       pass
     
-    app.register_blueprint(frontend)
+    app.register_blueprint(webui)
     app.register_blueprint(api)
     
     bcrypt.init_app(app)
+    jwt.init_app(app)
     db.init_app(app)
     
     with app.app_context():
       db.create_all()
-      
-    TOKEN_EXPIRATION_MINUTES = app.config['TOKEN_EXPIRATION_MINUTES']
       
     return app
     

@@ -4,7 +4,9 @@ import platform
 import random
 from pathlib import Path
 from unittest.mock import DEFAULT
+import logging
 
+log = logging.getLogger(__name__)
 class Config:
   
   if platform.system() == 'Darwin' or platform.system() == 'Windows':
@@ -25,32 +27,43 @@ class Config:
   BUILD_DIR: str = str(Path(os.environ.get("BUILD_DIR", default=APP_ROOT + "/frontend/public")))
 
   KEY_FILE: str = APP_DIR + "/.secret_key"
-      
-  if os.environ.get("SECRET_KEY") is None:
-    if not KEY_FILE.exists():
-      with open(KEY_FILE, "wb") as f:
-        f.write(base64.b64encode(os.urandom(32)).decode("utf-8"))
-        f.close()
-        
-    with open(KEY_FILE, "r") as f:
-      SECRET_KEY = f.read()
-      f.close()
-      
-  SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", default="sqlite:///" + DB_DIR + "/tpnewsletter.db")
   
-  JWT_COOKIE_NAME = os.environ.get("JWT_COOKIE_NAME", default="jwt_token")
-  JWT_COOKIE_SECURE = bool(os.environ.get("JWT_COOKIE_SECURE", default=False))
-  JWT_COOKIE_HTTPONLY = bool(os.environ.get("JWT_COOKIE_HTTPONLY", default=True))
+  SECRET_KEY = os.environ.get("SECRET_KEY", default=None)
   
-  TOKEN_EXPIRATION_MINUTES = int(os.environ.get("TOKEN_EXPIRATION_MINUTES", default=60))
+  SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", default="sqlite:///" + DB_DIR + "/tread.db")
+  
+  JWT_SECRET_KEY = SECRET_KEY
+  
+  JWT_COOKIE_NAME = "jwt_tread"
+  JWT_COOKIE_SECURE = os.environ.get("JWT_COOKIE_SECURE", default=False)
+  JWT_COOKIE_HTTPONLY = os.environ.get("JWT_COOKIE_HTTPONLY", default=True)
+  
+  # in hours but converted to minutes for more accurate token expiration
+  JWT_TOKEN_EXPIRATION = os.environ.get("JWT_TOKEN_EXPIRATION", default=(24 * 60))
   
   ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", default="admin")
   ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", default="P@assw0rd")
+  UPLOAD_MAX_SIZE = int(os.environ.get("UPLOAD_MAX_SIZE", default=1000000000))
   
-  DEFAULT_USER_ROLE = os.environ.get("DEFAULT_USER_ROLE", default="user")
-  DEFAULT_USER_THEME = os.environ.get("DEFAULT_USER_THEME", default="light")
-  DEFAULT_USER_PROFILE_PICTURE_URL = os.environ.get("DEFAULT_USER_PROFILE_PICTURE_URL", default="https://i.imgur.com/6kOZ4H1.png")
-  
-  
+  def __init__(self):
+    if self.SECRET_KEY==None:
+      self.SECRET_KEY: None = Config.get_secret_key()
       
+    log.info(msg="SECRET_KEY: " + self.SECRET_KEY)
+  
+  @staticmethod
+  def get_secret_key():
+    if os.environ.get("SECRET_KEY") is None:
+      if not Config.KEY_FILE.exists():
+        with open(Config.KEY_FILE, "wb") as f:
+          f.write(base64.b64encode(os.urandom(32)).decode("utf-8"))
+          f.close()
+          log.info(msg="Secret key created.")
+        
+    with open(Config.KEY_FILE, "r") as f:
+      secret_key = f.read()
+      f.close()
+      
+    return secret_key
+  
   
