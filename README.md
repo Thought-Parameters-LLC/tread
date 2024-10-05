@@ -4,7 +4,7 @@
 
 By: **Thought Parameters, LLC**
 
-## Empowering Informed Investments Through Strategic Clarity**
+## **Empowering Informed Investments Through Strategic Clarity**
 
 Tread is designed to help small and medium-sized businesses simplify the complex journey of strategic planning, performance tracking, and attracting support from investors and stakeholders. By providing a platform that meticulously details every aspect of a business strategy, Tread allows companies to present a comprehensive picture of their vision, their goals, and their path to success—all with the purpose of making investment decisions easier and more informed. With clear and actionable insights, we empower businesses to confidently articulate where they are headed and how they plan to get there.
 
