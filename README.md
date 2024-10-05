@@ -1,4 +1,4 @@
-# Tread: Business Strategy & Performance Manifesto Platform
+# Tread: "Turning Data into Direction" - Thought Parameters, LLC
 
 ![Tread Graphic](https://github.com/Thought-Parameters-LLC/tread/raw/21ca7f3673db53b46144cdebeb1f5cb2a86d622a/graphics/tread-500x500.png)
 
